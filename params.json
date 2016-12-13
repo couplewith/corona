@@ -1,6 +1,6 @@
 {
   "name": "Corona",
   "tagline": "SNMP  Async Client Collector and   RRD Graph Generator  : C and Perl based",
-  "body": "# ### Corona is SNMP Collector.\r\nThis SNMP  Async Client Collector and   RRD Graph Generator  : C and Perl based.\r\n\r\n### Designer Templates\r\n C and Perl based.\r\n\r\n### Creating pages manually\r\n.\r\n\r\n### Authors and Contributors\r\nAuthor :  couplewith@knou.ac.kr  \r\nSince  : 2000\r\n  \r\n\r\n### Support or Contact\r\n.\r\n",
+  "body": "# ### Corona is SNMP Collector.\r\nThis SNMP  Async Client Collector and   RRD Graph Generator  : C and Perl based.\r\n\r\n### Designer Templates\r\n C and Perl based.\r\n\r\n### Sample Gallery Web-corona\r\n![web-corona](gallery/gallery-web-corona.png)\r\n![web-corona-mem](gallery/gallery-web-corona-mem.png)\r\n![web-corona-tcp](gallery/gallery-web-corona-tcp.png)\r\n![web-corona-net](gallery/gallery-web-corona-net.png)\r\n\r\n### Authors and Contributors\r\nAuthor :  couplewith@knou.ac.kr  \r\nSince  : 2000\r\n  \r\n\r\n### Support or Contact\r\n.\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
