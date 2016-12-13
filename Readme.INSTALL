@@ -1,0 +1,246 @@
+#############################################################
+#
+#    PRE INSTALL GUIDE For Corona Server Monitoring System
+#  
+#############################################################
+
+ * It would of course be faster just to send one query for all variables,
+ * but the intention is to demonstrate the difference between synchronous
+ * and asynchronous operation.
+ *
+ * Niels Baggesen (Niels.Baggesen@uni-c.dk), 1999.
+ * couplewith (choi.doo.rip couplewith@yahoo.co.kr) 2003.06
+  -------------------------------------------------------------------
+ * Original API Source can downloaded at net-snmp.org 
+ *  asyncapi module
+ *      -- http://www.net-snmp.org/tutorial-5/toolkit/
+ *  
+ * purporse of Development and Open it.
+ *  When i have manage large system.
+ *  I need to monitoring without telnet or ssh.
+ *
+ *  I was seen many of NMS system like Basic mrtg system.
+ *  but i was not learning about that  it was so difficult.
+ *  so i choose the  RRD and about two years later 
+ *  get the version of Corona v2 .
+
+ *  Users for having or managing   large amount  system
+ *  i Suggest the some guide line of the Using snmp and RRD tool.
+ *
+ *  I Want it will be Useful to system engineers.
+ *  
+
+#############################################################
+##   Corona Server Monitoring System  Ver 2.1
+#       Corona was named by 2003
+##      Made by Choi doo rip In Seoul Korea
+##      couplewith@hanmail.net
+#############################################################
+
+
+For INSTALLATION Needed Kit
+   1. RRDTOOL
+   2. net-snmp-devlopment-pkg
+      or net-snmp-source version
+
+INSTALL STEPS
+#------------------------------------------------
+   rrdtool  <-- ftp.fastorama.com/mirrors/rrdtool
+   tar xvzf rrdtool-1.0.41.tar.gz
+   cd rrdtool-1.0.41
+   ./configure --prefix=/usr/local/rrdtool
+    make
+    make install
+
+#------------------------------------------------
+1. For Install net-snmp Development Packages.
+   - It's For Free Development  source.
+   net-snmp tool be Required  as bellow.
+     -> net-snmp-5.0.x
+     -> net-snmp-utils-5.0.x
+     -> snmp-devel-5.0.x
+    or
+     -> source net-snmp-src will be OK !
+        (www.net-snmp.org -> Download)
+
+   ( old ucd-snmp version is must need to Check !! )
+
+   CHK the package are installed.
+    ROOT>find /usr/include -name net-snmp-config.h 
+      -> /usr/include/net-snmp/net-snmp-config.h        [for RPM PACKAGE]
+      -> /usr/local/include/net-snmp/net-snmp-config.h  [for Source Version ]
+
+   if not rpm -Uvh net-snmp-devel-5.0.6-17.i386.rpm  or install net-snmp-src
+   and higher version Will be OK.
+     
+
+2. First Compile Corona in $CORONA_HOME/src
+
+   if You'r net-snmp version is
+    RPM-version then edit  
+      -L/usr/local/lib  -> "" :  need to be Erased !
+     gcc -o $1 $1.c -lnetsnmp -lcrypto -lm
+
+   or Source vison then Chk
+     gcc -o $1 $1.c -L/usr/local/lib -lnetsnmp -lcrypto -lm 
+
+  [[Compile]]
+   make.sh Corona
+    -> Comping Coroan.c Corona.h
+    -> cp Corona ../bin/
+  [[ Chk ]]
+   ldd Corona
+        libnetsnmp.so.5 => /usr/lib/libnetsnmp.so.5 (0x40021000)
+        libcrypto.so.4 => /lib/libcrypto.so.4 (0x4009f000)
+        libm.so.6 => /lib/tls/libm.so.6 (0x40190000)
+        libc.so.6 => /lib/tls/libc.so.6 (0x42000000)
+        libgssapi_krb5.so.2 => /usr/kerberos/lib/libgssapi_krb5.so.2 (0x401b2000)
+        libkrb5.so.3 => /usr/kerberos/lib/libkrb5.so.3 (0x401c5000)
+        libk5crypto.so.3 => /usr/kerberos/lib/libk5crypto.so.3 (0x40224000)
+        libcom_err.so.3 => /usr/kerberos/lib/libcom_err.so.3 (0x40234000)
+        libdl.so.2 => /lib/libdl.so.2 (0x40236000)
+        libz.so.1 => /usr/lib/libz.so.1 (0x40239000)
+        /lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x40000000)
+
+   if  OK  you can get the  Next steps.
+  
+
+3. Second  Configure  Enviroments.
+  Enviroment File  are can finded in $CORONA_HOME/conf
+  -> corona.conf  : HOSTIP          HOSTNAME        SNMP_COMMUNITY   OSNAME
+                    xxx.xxx.xxx.xxx target.snmp.com default_com_name LINUX
+  -> rrdsnmp.conf
+      example)
+       if $CORONA_HOME is /svc/web_app/CORONA Then 
+       rrdtool /usr/local/rrdtool/bin/rrdtool
+       RRDDATA /svc/web_app/CORONA/data
+       IMGDIR  /svc/web_app/CORONA/img
+   
+
+
+4. Third  Config Apache and Apache virtual Host
+
+ 
+   [[ APACHE-install ]]
+   #---------------------------------------------------
+    - CORONA need to be install Apache with PHP module.
+
+
+   [[ HTTPD.conf ]]
+   #---------------------------------------------------
+
+   NameVirtualHost 111.2xx.333.123
+   <VirtualHost 111.2xx.333.123>
+      ServerName log.couplewith.xxx
+      #  DocumentRoot  /svc/corona/server/support/     #OLD
+      DocumentRoot  /svc/web_app/CORONA/support
+      ServerAdmin   enkai@enkai.co.kr
+
+      ErrorLog logs/support-error_log
+      CustomLog logs/support-access_log common
+
+      <Directory /svc/web_app/CORONA/support/ >
+
+         AuthType Basic
+         AuthName "Member Invitation Only"
+         AuthUserFile /svc/web_app/CORONA/support/.htpasswd
+         Require valid-user
+
+         AllowOverride FileInfo
+
+      </Directory>
+
+   </VirtualHost>
+
+   [[ HTPASSWD ]]
+   #---------------------------------------------------
+   if you need basic Security authorization.
+   
+   $APACHE_HOME/bin/htpasswd -c passwordfile username
+
+
+   [[ PHP- CGI Chk ]]
+   #---------------------------------------------------
+      $CORONAHOME/support is  Contains Slist.php, Smenu.php, index.php 
+       and ./inc/hosts.inc  php script files.
+       So, you need to some configuring  environment.
+           hosts.inc is that.
+
+      example>
+       some check points are correct.
+
+       $CORONAHOME is /svc/web_app/CORONA/img/HTMLS and 
+       apache ServerName is  log.couplewith.xxx  and 
+ 
+        $CORONAHOME/data contains two directoryes 
+ 
+          > [couplewith@admin data]$ cd  $CORONAHOME/data
+          > [couplewith@admin data]$ ls
+          >  group1.co.kr  group2.com
+
+       then 
+          <?
+           // hosts.inc
+
+           //***********************************
+           // For Slist.php
+           //***********************************
+           $Bdir="/svc/web_app/CORONA/img/HTMLS";
+           $Whome="http://log.couplewith.xxx/HTMLS/";
+       
+       
+           //***********************************
+           // For Smenu.php
+           //***********************************
+           $hosts = array("group1.co.kr","group2.com"); 
+           ?>
+      
+    moreover  [./inc/hosts.inc] it's Contets depend on corona.conf
+      - you can Catched two files are codependence.
+        and Catch the common point for useing or upgrading.
+      - I was only to suggest Guideline..
+        
+
+5. Fourth Exec Cron Setting
+
+   [[ GENERATE Config File ]]
+     $CORONAHOME/conf contains corona.conf and rrdsnmp.conf
+     and Modify that.
+     
+    
+   [[ GENERATE html-page File ]]
+     execute  Gen_img.pl $CORONAHOME/bin -> perl ./Gen_img.pl
+
+   [[ CRON ]]
+   #---------------------------------------------------
+   5,10,15,20,25 * * * * /svc/web_app/CORONA/bin/Corona.sh >/dev/null
+   30,35,40,45,55,0 * * * * /svc/web_app/CORONA/bin/Corona.sh >/dev/null
+   
+
+
+[ ETC ] 
+  USING SNMP-tools like snmpget, snmpwalk, snmpbulkwalk, snmpbulkget ...
+  and you can need knowhow  to using that with various Options.
+  So, I give some short cut of Using '-O' Options.
+#==========================
+  USING  SNMP Query 
+
+#snmpwalk  -v 1 -c RCOMSNMP -O n  cass.enkai.co.kr system   <- 1
+#snmpwalk  -v 1 -c RCOMSNMP -O b  cass.enkai.co.kr system   <- 2
+#snmpwalk  -v 1 -c RCOMSNMP -O f  cass.enkai.co.kr system   <- 3
+#snmpwalk  -v 1 -c RCOMSNMP -O Q  cass.enkai.co.kr system   <- 4
+#snmpwalk  -v 1 -c RCOMSNMP -O T  cass.enkai.co.kr system   <- 5
+
+1.  n:  print OIDs numerically
+      .1.3.6.1.2.1.1.7.0 = INTEGER: 72
+2.  b:  do not break OID indexes down
+      SNMPv2-MIB::sysServices.0 = INTEGER: 72
+
+3.  f:  print full OIDs on output
+     .iso.org.dod.internet.mgmt.mib-2.system.sysServices.0 = INTEGER: 72
+
+4.  Q:  quick print with equal-signs
+      SNMPv2-MIB::sysServices.0 = 72
+
+5.  T:  print human-readable text along with hex strings
+      SNMPv2-MIB::sysServices.0 = INTEGER: 72
