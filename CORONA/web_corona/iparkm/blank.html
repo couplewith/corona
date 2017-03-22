@@ -1,0 +1,33 @@
+
+<?
+	require_once "{$_SERVER['DOCUMENT_ROOT']}/inc/corona_web.inc";
+		
+?>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/iparkm/css/default.css"/>
+	</head>
+<body bgcolor=#f9c9f9 text=#080808 link=#000000 vlink=#080808>
+<CENTER>
+<br>
+<br>
+<br>
+<?
+	include_once "inc/logo.inc";
+
+	echo <<<TD
+	<div class="company_inpo">
+	<p>
+		<ul> {$CORONA['company']} </ul>
+       	 	<ul> System Web Monitor </ul>
+		<ul> {$$CORONA['VER']} </ul>
+		<ul> {$CORONA['WEB']} </ul>
+		<ul> {$CORONA['COPY']} </ul>
+        </p>
+	</div>
+
+TD;
+?>
+
+</body>
+</html>

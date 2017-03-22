@@ -1,0 +1,31 @@
+
+/*top 메뉴*/
+/*  공통_로고 라인 영역   */
+.skin_area_logo {
+       height:63px; width:960;
+       margin:0;
+       padding:0x;
+       }
+
+   /*  로고   */
+   #skin_logo {
+       float:center;
+       margin: 12px 0px 3px 0px;
+       padding:0;
+       border:0;
+       }
+
+   /*로고이미지변경*/
+   #skin_logo p a{display:block;background:url(/iparkm/image/logo_iparkm.gif) 0 0 no-repeat;width:180px;height:46px;margin:0 0 2 5px; 0 50px;}i
+
+   #skin_logo em{display:none;}
+
+   /*  홈/바로가기 영역  */
+.skin_site_link {
+     height:26px;
+     float:right; display:inline;
+     vertical-align: top;
+     margin: 6px 0px 0px 0px;
+     padding:0;
+     color:#cccccc;
+     }
