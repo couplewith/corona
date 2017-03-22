@@ -1,6 +1,9 @@
-# Corona is Simple and Async SNMP client module.
 
-Refer : [corona/CORONA/src/](https://github.com/couplewith/corona/blob/corona-v1/CORONA/src)
+# Corona 
+ 
+ * corona is Simple and Async SNMP client module.
+
+ * Refer : [corona/CORONA/src/](https://github.com/couplewith/corona/blob/corona-v1/CORONA/src)
 
 #############################################################
 #
@@ -47,7 +50,7 @@ For INSTALLATION Needed Kit
    2. net-snmp-devlopment-pkg
       or net-snmp-source version
 
-INSTALL STEPS
+# INSTALL STEPS
 #------------------------------------------------
    rrdtool  <-- ftp.fastorama.com/mirrors/rrdtool
    tar xvzf rrdtool-1.0.41.tar.gz
